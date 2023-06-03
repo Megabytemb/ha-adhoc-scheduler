@@ -11,8 +11,8 @@ from .scheduler import Scheduler
 
 ENTITY_DESCRIPTIONS = (
     SensorEntityDescription(
-        key="adhoc_scheduler",
-        name="Integration Sensor",
+        key="actionsCount",
+        name="Actions count",
         icon="mdi:format-quote-close",
     ),
 )
@@ -25,7 +25,7 @@ async def async_setup_entry(
     scheduler = hass.data[DOMAIN]["scheduler"]
 
     async_add_devices(
-        IntegrationBlueprintSensor(
+        ActionsCountSensor(
             config_entry=entry,
             entity_description=entity_description,
             scheduler=scheduler,
@@ -34,7 +34,7 @@ async def async_setup_entry(
     )
 
 
-class IntegrationBlueprintSensor(SensorEntity):
+class ActionsCountSensor(SensorEntity):
     """adhoc_scheduler Sensor class."""
 
     def __init__(
