@@ -1,47 +1,87 @@
-# Notice
+# Adhoc Scheduler
 
-The component and platforms in this repository are not meant to be used by a
-user, but as a "blueprint" that custom component developers can build
-upon, to make more awesome stuff.
+[![GitHub Release][releases-shield]][releases]
+[![GitHub Activity][commits-shield]][commits]
+[![License][license-shield]](LICENSE)
 
-HAVE FUN! 😎
+[![hacs][hacsbadge]][hacs]
+[![Discord][discord-shield]][discord]
+[![Community Forum][forum-shield]][forum]
 
-## Why?
+This Home Assistant custom component allows you to schedule actions on an adhoc basis, either to run after a specified delay or at a specific time. As an added benefit, this integration also provides additional logbook entries, so you can easily track when a service was triggered by it. Another key feature is that schedules are saved to a file, ensuring they survive reboots and continue as planned.
 
-This is simple, by having custom_components look (README + structure) the same
-it is easier for developers to help each other and for users to start using them.
+**This integration will set up the following platforms.**
 
-If you are a developer and you want to add things to this "blueprint" that you think more
-developers will have use for, please open a PR to add it :)
+Platform | Description
+-- | --
+`sensor` | Show current number of pending actions
 
-## What?
+## Installation
 
-This repository contains multiple files, here is a overview:
+1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
+1. If you do not have a `custom_components` directory (folder) there, you need to create it.
+1. In the `custom_components` directory (folder) create a new folder called `adhoc_scheduler`.
+1. Download _all_ the files from the `custom_components/adhoc_scheduler/` directory (folder) in this repository.
+1. Place the files you downloaded in the new directory (folder) you created.
+1. Restart Home Assistant
+1. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Adhoc Scheduler"
 
-File | Purpose | Documentation
--- | -- | --
-`.devcontainer.json` | Used for development/testing with Visual Studio Code. | [Documentation](https://code.visualstudio.com/docs/remote/containers)
-`.github/ISSUE_TEMPLATE/*.yml` | Templates for the issue tracker | [Documentation](https://help.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository)
-`.vscode/tasks.json` | Tasks for the devcontainer. | [Documentation](https://code.visualstudio.com/docs/editor/tasks)
-`custom_components/adhoc_scheduler/*` | Integration files, this is where everything happens. | [Documentation](https://developers.home-assistant.io/docs/creating_component_index)
-`CONTRIBUTING.md` | Guidelines on how to contribute. | [Documentation](https://help.github.com/en/github/building-a-strong-community/setting-guidelines-for-repository-contributors)
-`LICENSE` | The license file for the project. | [Documentation](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository)
-`README.md` | The file you are reading now, should contain info about the integration, installation and configuration instructions. | [Documentation](https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax)
-`requirements.txt` | Python packages used for development/lint/testing this integration. | [Documentation](https://pip.pypa.io/en/stable/user_guide/#requirements-files)
+## Usage
 
-## How?
+This custom component provides a new service `adhoc_scheduler.schedule` which you can call with various parameters to schedule an action.
 
-1. Create a new repository in GitHub, using this repository as a template by clicking the "Use this template" button in the GitHub UI.
-1. Open your new repository in Visual Studio Code devcontainer (Preferably with the "`Dev Containers: Clone Repository in Named Container Volume...`" option).
-1. Rename all instances of the `adhoc_scheduler` to `custom_components/<your_integration_domain>` (e.g. `custom_components/awesome_integration`).
-1. Rename all instances of the `Adhoc Scheduler` to `<Your Integration Name>` (e.g. `Awesome Integration`).
-1. Run the `scripts/develop` to start HA and test out your new integration.
+- CONF_NAME (optional): A string that identifies your scheduled action.
+- CONF_ACTION (required): The action to be executed. It follows the same schema as the [action][action-syntax] part of an automation in Home Assistant.
+- CONF_DELAY (optional): A delay after which the action will be executed. This should be a positive time period.
+- CONF_TRIGGER_TIME (optional): The exact time when the action will be triggered.
+- CONF_DELAY_FROM (optional): The datetime from which the delay will be calculated.
 
-## Next steps
+Note: You must provide at either CONF_DELAY or CONF_TRIGGER_TIME, but not both
 
-These are some next steps you may want to look into:
-- Add tests to your integration, [`pytest-homeassistant-custom-component`](https://github.com/MatthewFlamm/pytest-homeassistant-custom-component) can help you get started.
-- Add brand images (logo/icon) to https://github.com/home-assistant/brands.
-- Create your first release.
-- Share your integration on the [Home Assistant Forum](https://community.home-assistant.io/).
-- Submit your integration to the [HACS](https://hacs.xyz/docs/publish/start).
+Example, toggle an input boolean in 5 minutes from now
+```
+service: adhoc_scheduler.schedule
+data:
+  delay:
+    minutes: 1
+  action:
+    service: input_boolean.toggle
+    target:
+      entity_id: input_boolean.test_toggle
+```
+
+Example: toggle an input boolean at 10:00:00
+```
+service: adhoc_scheduler.schedule
+data:
+  action:
+    service: input_boolean.toggle
+    target:
+      entity_id: input_boolean.test_toggle
+  trigger_time: "2023-06-04 10:00:00"
+  name: "Toggle the Input Boolean"
+  ```
+
+## Logbook Integration
+This custom component provides additional logbook entries each time a scheduled service is triggered. This allows you to track when a particular action was executed and helps in debugging and monitoring your scheduled actions.
+
+## Contributions are welcome!
+
+If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
+
+***
+
+[adhoc_scheduler]: https://github.com/Megabytemb/ha-adhoc-scheduler
+[commits-shield]: https://img.shields.io/github/commit-activity/y/Megabytemb/ha-adhoc-scheduler.svg?style=for-the-badge
+[commits]: https://github.com/Megabytemb/ha-adhoc-scheduler/commits/main
+[hacs]: https://github.com/hacs/integration
+[hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
+[discord]: https://discord.gg/Qa5fW2R
+[discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
+[exampleimg]: example.png
+[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
+[forum]: https://community.home-assistant.io/
+[license-shield]: https://img.shields.io/github/license/Megabytemb/ha-adhoc-scheduler.svg?style=for-the-badge
+[releases-shield]: https://img.shields.io/github/release/Megabytemb/ha-adhoc-scheduler.svg?style=for-the-badge
+[releases]: https://github.com/Megabytemb/ha-adhoc-scheduler/releases
+[action-syntax]: https://www.home-assistant.io/docs/automation/action/
