@@ -1,0 +1,43 @@
+schedule:
+  name: Schedule an Action
+  description: Schedule an action to run at a spcific time or time delta
+  fields:
+    name:
+      name: Name
+      description: Name of the schedule
+      required: false
+      example: Name your schedule. debugging use only.
+      selector:
+        text:
+    trigger_time:
+      name: Trigger Time
+      description:
+        set a timestamp for when the action should trigger
+      required: false
+      example: "2022-03-22 20:00:00"
+      selector:
+        datetime:
+    delay:
+      name: Delay
+      description:
+        set a time delta for when the action should trigger
+      example: "minutes: 10"
+      required: false
+      selector:
+        object:
+    delay_from:
+      name: Delay From
+      description:
+        Optional, Set a datetime to delay from.
+      required: false
+      example: "2022-03-22 20:00:00"
+      selector:
+        datetime:
+    action:
+      name: Action
+      description:
+        Define the Action to trigger. Same syntax as Automation and Scripts
+      example: platform specific
+      required: true
+      selector:
+        object:

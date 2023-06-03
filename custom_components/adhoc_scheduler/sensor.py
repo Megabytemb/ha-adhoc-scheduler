@@ -1,46 +1,50 @@
-"""Sensor platform for integration_blueprint."""
+"""Sensor platform for adhoc_scheduler."""
 from __future__ import annotations
 
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN
-from .coordinator import BlueprintDataUpdateCoordinator
-from .entity import IntegrationBlueprintEntity
+from .const import NAME
 
 ENTITY_DESCRIPTIONS = (
     SensorEntityDescription(
-        key="integration_blueprint",
+        key="adhoc_scheduler",
         name="Integration Sensor",
         icon="mdi:format-quote-close",
     ),
 )
 
 
-async def async_setup_entry(hass, entry, async_add_devices):
+async def async_setup_entry(
+    hass: HomeAssistant, entry: ConfigEntry, async_add_devices: AddEntitiesCallback
+):
     """Set up the sensor platform."""
-    coordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_devices(
         IntegrationBlueprintSensor(
-            coordinator=coordinator,
+            config_entry=entry,
             entity_description=entity_description,
         )
         for entity_description in ENTITY_DESCRIPTIONS
     )
 
 
-class IntegrationBlueprintSensor(IntegrationBlueprintEntity, SensorEntity):
-    """integration_blueprint Sensor class."""
+class IntegrationBlueprintSensor(SensorEntity):
+    """adhoc_scheduler Sensor class."""
 
     def __init__(
         self,
-        coordinator: BlueprintDataUpdateCoordinator,
+        config_entry: ConfigEntry,
         entity_description: SensorEntityDescription,
     ) -> None:
         """Initialize the sensor class."""
-        super().__init__(coordinator)
         self.entity_description = entity_description
+        self._config_entry = config_entry
+        self._name = NAME
+        self._attr_unique_id = f"{config_entry.entry_id}-tts"
 
     @property
     def native_value(self) -> str:
         """Return the native value of the sensor."""
-        return self.coordinator.data.get("body")
+        return 5
