@@ -30,13 +30,13 @@ Platform | Description
 
 This custom component provides a new service `adhoc_scheduler.schedule` which you can call with various parameters to schedule an action.
 
-- CONF_NAME (optional): A string that identifies your scheduled action.
-- CONF_ACTION (required): The action to be executed. It follows the same schema as the [action][action-syntax] part of an automation in Home Assistant.
-- CONF_DELAY (optional): A delay after which the action will be executed. This should be a positive time period.
-- CONF_TRIGGER_TIME (optional): The exact time when the action will be triggered.
-- CONF_DELAY_FROM (optional): The datetime from which the delay will be calculated.
+- `name` (optional): A string that identifies your scheduled action.
+- `action` (required): The action to be executed. It follows the same schema as the [action][action-syntax] part of an automation in Home Assistant.
+- `delay`: A delay after which the action will be executed. This should be a positive time period.
+- `trigger_time`: The exact time when the action will be triggered.
+- `delay_from` (optional): The datetime from which the delay will be calculated.
 
-Note: You must provide at either CONF_DELAY or CONF_TRIGGER_TIME, but not both
+Note: You must provide at either `delay` or `trigger_time`, but not both
 
 Example, toggle an input boolean in 5 minutes from now
 ```
