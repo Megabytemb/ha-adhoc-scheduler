@@ -68,6 +68,8 @@ class Scheduler:
     async def async_load(self) -> None:
         """Load saved actions."""
         stored = await self._store.async_load()
+        if stored is None:
+            return
 
         for value in stored:
             fire_time = value.get("fire_time")
