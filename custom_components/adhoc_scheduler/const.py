@@ -1,9 +1,10 @@
 """Constants for adhoc_scheduler."""
 from logging import Logger, getLogger
 
+import voluptuous as vol
+
 from homeassistant.const import CONF_DELAY, CONF_NAME, CONF_TRIGGER_TIME
 import homeassistant.helpers.config_validation as cv
-import voluptuous as vol
 
 LOGGER: Logger = getLogger(__package__)
 
