@@ -24,7 +24,7 @@ schedule:
       example: "minutes: 10"
       required: false
       selector:
-        object:
+        duration:
     delay_from:
       name: Delay From
       description:
@@ -40,4 +40,4 @@ schedule:
       example: platform specific
       required: true
       selector:
-        object:
+        action:
