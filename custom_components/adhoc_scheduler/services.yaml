@@ -1,6 +1,6 @@
 schedule:
   name: Schedule an Action
-  description: Schedule an action to run at a spcific time or time delta
+  description: Schedule an action to run at a specific time or time delta
   fields:
     name:
       name: Name
