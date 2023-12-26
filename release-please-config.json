@@ -1,0 +1,19 @@
+{
+    "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+    "group-pull-request-title-pattern": "release v${version}",
+    "include-component-in-tag": false,
+    "include-v-in-tag": false,
+    "packages": {
+        ".": {
+            "release-type": "python",
+            "package-name": "adhoc_scheduler",
+            "extra-files": [
+                {
+                    "type": "json",
+                    "path": "custom_components/adhoc_scheduler/manifest.json",
+                    "jsonpath": "$.version"
+                }
+            ]
+        }
+    }
+}
