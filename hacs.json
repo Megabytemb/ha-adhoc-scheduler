@@ -1,8 +1,4 @@
 {
     "name": "Adhoc Scheduler",
-    "filename": "adhoc_scheduler.zip",
-    "hide_default_branch": true,
-    "homeassistant": "2023.5.3",
-    "render_readme": true,
-    "zip_release": true
+    "homeassistant": "2023.5.3"
 }

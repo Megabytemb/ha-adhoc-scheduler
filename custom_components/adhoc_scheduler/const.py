@@ -10,7 +10,7 @@ LOGGER: Logger = getLogger(__package__)
 
 ################################
 # Do not change! Will be set by release workflow
-INTEGRATION_VERSION = "main"  # x-release-please-version
+INTEGRATION_VERSION = "0.1.3"  # x-release-please-version
 ################################
 
 NAME = "Adhoc Scheduler"

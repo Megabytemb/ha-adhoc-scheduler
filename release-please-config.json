@@ -8,12 +8,12 @@
             "release-type": "python",
             "package-name": "adhoc_scheduler",
             "extra-files": [
+                "custom_components/adhoc_scheduler/const.py",
                 {
                     "type": "json",
                     "path": "custom_components/adhoc_scheduler/manifest.json",
                     "jsonpath": "$.version"
-                },
-                "custom_components/adhoc_scheduler/const.py"
+                }
             ]
         }
     }
