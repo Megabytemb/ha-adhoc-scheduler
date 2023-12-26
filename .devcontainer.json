@@ -6,9 +6,7 @@
   "containerEnv": {
     "DEVCONTAINER": "1"
   },
-  "appPort": [
-    "8123:8123"
-  ],
+  "appPort": ["8123:8123"],
   "customizations": {
     "vscode": {
       "extensions": [
@@ -18,10 +16,10 @@
         "visualstudioexptteam.vscodeintellicode",
         "redhat.vscode-yaml",
         "esbenp.prettier-vscode",
-        "GitHub.vscode-pull-request-github"
+        "GitHub.vscode-pull-request-github",
+        "vivaxy.vscode-conventional-commits"
       ]
     }
   },
   "remoteUser": "vscode"
-
 }

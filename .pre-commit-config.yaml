@@ -38,6 +38,11 @@ repos:
     rev: v1.32.0
     hooks:
       - id: yamllint
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.0.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
 
 ci:
   autofix_commit_msg: |
