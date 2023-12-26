@@ -9,11 +9,13 @@ repos:
     rev: v3.15.0
     hooks:
       - id: pyupgrade
-        args: [--py310-plus]
-  - hooks:
-      - id: black
-    repo: https://github.com/psf/black
-    rev: 23.12.1
+        args: [--py311-plus]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-executables-have-shebangs
+      - id: check-json
+        exclude: (.vscode|.devcontainer)
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.6
     hooks:
@@ -32,10 +34,10 @@ repos:
           - --format=custom
           - --configfile=tests/bandit.yaml
         files: ^(tests)/.+\.py$
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.32.0
     hooks:
-      - id: isort
+      - id: yamllint
 
 ci:
   autofix_commit_msg: |
