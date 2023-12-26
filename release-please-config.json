@@ -12,7 +12,8 @@
                     "type": "json",
                     "path": "custom_components/adhoc_scheduler/manifest.json",
                     "jsonpath": "$.version"
-                }
+                },
+                "custom_components/adhoc_scheduler/const.py"
             ]
         }
     }
