@@ -4,7 +4,13 @@ from datetime import datetime, timedelta
 from functools import partial
 import logging
 
-from homeassistant.core import Context, HassJob, HomeAssistant, ServiceCall
+from homeassistant.core import (
+    CALLBACK_TYPE,
+    Context,
+    HassJob,
+    HomeAssistant,
+    ServiceCall,
+)
 from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.script import Script
 from homeassistant.helpers.storage import Store
@@ -35,6 +41,7 @@ class Action:
     action_conf: dict
     fire_time: datetime
     orig_context: dict
+    unschedule_fn: CALLBACK_TYPE | None = None
 
     @property
     def delay(self) -> timedelta:
@@ -94,13 +101,30 @@ class Scheduler:
         actions_dict = [action.to_dict() for action in self.scheduled_actions.values()]
         await self._store.async_save(actions_dict)
 
+    async def _unschedule_action(self, action: Action):
+        """Remove action from hass loop."""
+        if action.unschedule_fn is not None:
+            action.unschedule_fn()
+
+            _LOGGER.info(
+                "Unscheduled %s",
+                action.name,
+            )
+        else:
+            _LOGGER.info(
+                "%s doesn't appear to be scheduled.",
+                action.name,
+            )
+
     async def _schedule_action(self, action: Action):
         """Add Action to hass loop."""
         job = HassJob(
             partial(self.execute_action, action=action), cancel_on_shutdown=True
         )
 
-        async_call_later(hass=self.hass, delay=action.delay, action=job)
+        action.unschedule_fn = async_call_later(
+            hass=self.hass, delay=action.delay, action=job
+        )
 
         _LOGGER.info(
             "Scheduled %s to run at %s seconds from now",
