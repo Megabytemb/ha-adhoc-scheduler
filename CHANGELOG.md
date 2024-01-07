@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/Megabytemb/ha-adhoc-scheduler/compare/0.1.4...0.2.0) (2024-01-07)
+
+
+### Features
+
+* Support deleting and re-defining schedules ([734eca0](https://github.com/Megabytemb/ha-adhoc-scheduler/commit/734eca09fff4c1da0f77e96f526e8ab05d7e3975))
+
+
+### Bug Fixes
+
+* Wait for Home Assistant to Start before running actions. ([0c39680](https://github.com/Megabytemb/ha-adhoc-scheduler/commit/0c396803555355bd51e88b6e8efa15125ad5453c))
+
 ## [0.1.4](https://github.com/Megabytemb/ha-adhoc-scheduler/compare/v0.1.3...0.1.4) (2023-12-26)
 
 
