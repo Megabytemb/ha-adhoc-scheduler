@@ -20,6 +20,7 @@ from .const import (
     CONF_ACTION,
     CONF_DELAY,
     CONF_DELAY_FROM,
+    CONF_ID,
     CONF_NAME,
     CONF_TRIGGER_TIME,
     DOMAIN,
@@ -64,7 +65,7 @@ class Scheduler:
 
     def __init__(self, hass: HomeAssistant):
         """Initialize the scheduler."""
-        self.hass = hass
+        self.hass: HomeAssistant = hass
         self.scheduled_actions: dict[str, Action] = {}
         self._store = Store[dict[str, dict]](
             hass,
@@ -101,13 +102,27 @@ class Scheduler:
         actions_dict = [action.to_dict() for action in self.scheduled_actions.values()]
         await self._store.async_save(actions_dict)
 
+    async def _unschedule_action_by_id(self, action_id: str):
+        """Unschedule Action via its ID."""
+        if action_id not in self.scheduled_actions:
+            _LOGGER.info(
+                "Action %s is not in the list of scheduled actions.", action_id
+            )
+            return
+
+        existing_action = self.scheduled_actions[action_id]
+        await self._unschedule_action(existing_action)
+        self.scheduled_actions.pop(action_id)
+
+        await self._save_actions()
+
     async def _unschedule_action(self, action: Action):
         """Remove action from hass loop."""
         if action.unschedule_fn is not None:
             action.unschedule_fn()
 
             _LOGGER.info(
-                "Unscheduled %s",
+                "Unscheduled %s and removed from HASS Job list.",
                 action.name,
             )
         else:
@@ -117,7 +132,10 @@ class Scheduler:
             )
 
     async def _schedule_action(self, action: Action):
-        """Add Action to hass loop."""
+        """Add Action to hass loop.
+
+        Fires immeditly if action fire_time was in the past.
+        """
         job = HassJob(
             partial(self.execute_action, action=action), cancel_on_shutdown=True
         )
@@ -132,6 +150,15 @@ class Scheduler:
             action.delay.total_seconds(),
         )
 
+    async def delete_schedule(self, call: ServiceCall):
+        """Delete a schedule."""
+        config = call.data
+        action_id = config.get(CONF_ID)
+
+        await self._unschedule_action_by_id(action_id)
+
+        _LOGGER.info("Deleted Schedule: %s", action_id)
+
     async def add_schedule(self, call: ServiceCall):
         """Add a schedule."""
         config = call.data
@@ -141,10 +168,15 @@ class Scheduler:
         if name is None:
             name = f"action_{len(self.scheduled_actions) + 1}"
 
+        action_id = config.get(CONF_ID)
+        if action_id is None:
+            action_id = ulid_util.ulid()
+
+        if action_id in self.scheduled_actions:
+            await self._unschedule_action_by_id(action_id)
+
         script = Script(self.hass, action_conf, name, DOMAIN)
         orig_context = call.context.as_dict()
-
-        action_id = ulid_util.ulid()
 
         if (fire_time := config.get(CONF_TRIGGER_TIME)) is None:
             # if we don't have a trigger time, then we're dealing with a Delay.
@@ -167,7 +199,7 @@ class Scheduler:
 
         await self._schedule_action(action)
 
-        _LOGGER.info("Added Schedule.")
+        _LOGGER.info("Added Schedule: %s", action.id)
 
     async def execute_action(self, *args, action: Action, **kwargs):
         """Execute the provided action."""

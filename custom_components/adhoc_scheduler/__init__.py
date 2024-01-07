@@ -9,7 +9,13 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EVENT_HOMEASSISTANT_START, Platform
 from homeassistant.core import HomeAssistant, ServiceCall
 
-from .const import DOMAIN, SCHEDULE_SERVICE_SCHEMA, SERVICE_SCHEDULE
+from .const import (
+    DELETA_SCHEDULE_SERVICE_SCHEMA,
+    DOMAIN,
+    SCHEDULE_SERVICE_SCHEMA,
+    SERVICE_DELETE_SCHEDULE,
+    SERVICE_SCHEDULE,
+)
 from .scheduler import Scheduler
 
 PLATFORMS: list[Platform] = [
@@ -41,6 +47,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         SERVICE_SCHEDULE,
         async_handle_schedule_service,
         schema=SCHEDULE_SERVICE_SCHEMA,
+    )
+
+    async def async_handle_delete_schedule_service(call: ServiceCall):
+        await scheduler.delete_schedule(call)
+
+    hass.services.async_register(
+        DOMAIN,
+        SERVICE_DELETE_SCHEDULE,
+        async_handle_delete_schedule_service,
+        schema=DELETA_SCHEDULE_SERVICE_SCHEMA,
     )
 
     return True

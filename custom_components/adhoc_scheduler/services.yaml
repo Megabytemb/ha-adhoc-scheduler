@@ -4,40 +4,49 @@ schedule:
   fields:
     name:
       name: Name
-      description: Name of the schedule
+      description: Name of the schedule. Shown in Logbook.
       required: false
-      example: Name your schedule. debugging use only.
       selector:
         text:
-    trigger_time:
-      name: Trigger Time
-      description:
-        set a timestamp for when the action should trigger
+    id:
+      name: ID
+      description: ID of the schedule. Allows for future deletion, and overwrites.
       required: false
-      example: "2022-03-22 20:00:00"
       selector:
-        datetime:
+        text:
     delay:
       name: Delay
-      description:
-        set a time delta for when the action should trigger
-      example: "minutes: 10"
+      description: set a time delta for when the action should trigger
       required: false
       selector:
         duration:
     delay_from:
-      name: Delay From
-      description:
-        Optional, Set a datetime to delay from.
+      name: Deleay From
+      description: If using a Delay, optionally set when to delay from.
       required: false
-      example: "2022-03-22 20:00:00"
+      selector:
+        datetime:
+    trigger_time:
+      name: Trigger Time
+      description: set a timestamp for when the action should trigger
+      required: false
       selector:
         datetime:
     action:
       name: Action
-      description:
-        Define the Action to trigger. Same syntax as Automation and Scripts
-      example: platform specific
+      description: Define the Action to trigger. Same syntax as Automation and Scripts
       required: true
       selector:
         action:
+
+delete_schedule:
+  name: Delete a Schedule
+  description: Delete a previously scheduled action.
+  fields:
+    id:
+      name: ID
+      description: ID of the schedule to delete.
+      required: true
+      example: my_id_24578
+      selector:
+        text:
