@@ -11,6 +11,10 @@ __pycache__
 .vscode
 coverage.xml
 
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
 
 # Home Assistant configuration
 config/*
