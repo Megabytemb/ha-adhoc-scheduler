@@ -6,7 +6,7 @@ https://github.com/Megabytemb/ha-adhoc-scheduler
 from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import Platform
+from homeassistant.const import EVENT_HOMEASSISTANT_START, Platform
 from homeassistant.core import HomeAssistant, ServiceCall
 
 from .const import DOMAIN, SCHEDULE_SERVICE_SCHEMA, SERVICE_SCHEDULE
@@ -23,7 +23,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
 
     scheduler = hass.data[DOMAIN]["scheduler"] = Scheduler(hass)
-    await scheduler.async_load()
+
+    async def _async_startup(event):
+        """Init on startup."""
+        await scheduler.async_load()
+
+    hass.bus.async_listen_once(EVENT_HOMEASSISTANT_START, _async_startup)
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(async_reload_entry))
