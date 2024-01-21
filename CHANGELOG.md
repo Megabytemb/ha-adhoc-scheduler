@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/Megabytemb/ha-adhoc-scheduler/compare/0.2.0...0.3.0) (2024-01-21)
+
+
+### Features
+
+* Move everything to UTC time ([1fe5d89](https://github.com/Megabytemb/ha-adhoc-scheduler/commit/1fe5d89c659e949d42f77432df3b54c037281d5b))
+
 ## [0.2.0](https://github.com/Megabytemb/ha-adhoc-scheduler/compare/0.1.4...0.2.0) (2024-01-07)
 
 
