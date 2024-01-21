@@ -1,6 +1,6 @@
 """Scheduler module for adhoc scheduler."""
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime as datetime_sys, timedelta
 from functools import partial
 import logging
 
@@ -14,7 +14,7 @@ from homeassistant.core import (
 from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.script import Script
 from homeassistant.helpers.storage import Store
-from homeassistant.util import ulid as ulid_util
+from homeassistant.util import dt as dt_util, ulid as ulid_util
 
 from .const import (
     CONF_ACTION,
@@ -40,14 +40,14 @@ class Action:
     name: str
     script: Script
     action_conf: dict
-    fire_time: datetime
+    fire_time: datetime_sys
     orig_context: dict
     unschedule_fn: CALLBACK_TYPE | None = None
 
     @property
     def delay(self) -> timedelta:
         """Calculate Delay."""
-        return self.fire_time - datetime.now()
+        return self.fire_time - dt_util.utcnow()
 
     def to_dict(self):
         """Convert dataClass to Dict."""
@@ -81,7 +81,7 @@ class Scheduler:
 
         for value in stored:
             fire_time = value.get("fire_time")
-            fire_time = datetime.fromtimestamp(fire_time)
+            fire_time = dt_util.utc_from_timestamp(fire_time)
 
             script = Script(self.hass, value["action_conf"], value["name"], DOMAIN)
 
@@ -181,9 +181,15 @@ class Scheduler:
         if (fire_time := config.get(CONF_TRIGGER_TIME)) is None:
             # if we don't have a trigger time, then we're dealing with a Delay.
 
-            delay_from = config.get(CONF_DELAY_FROM, datetime.now())
+            delay_from = config.get(CONF_DELAY_FROM)
+            if delay_from is None:
+                delay_from = dt_util.utcnow()
+            else:
+                delay_from = dt_util.as_utc(delay_from)
 
             fire_time = delay_from + config[CONF_DELAY]
+
+        fire_time = dt_util.as_utc(fire_time)
 
         action = Action(
             id=action_id,
