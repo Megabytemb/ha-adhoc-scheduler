@@ -1,6 +1,6 @@
 {
   "name": "Adhoc Scheduler Custom Component",
-  "image": "mcr.microsoft.com/vscode/devcontainers/python:0-3.11",
+  "image": "mcr.microsoft.com/devcontainers/python:3.13",
   "postCreateCommand": "scripts/setup",
   "postStartCommand": "scripts/bootstrap",
   "containerEnv": {
