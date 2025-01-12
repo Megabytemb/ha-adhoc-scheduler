@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/Megabytemb/ha-adhoc-scheduler/compare/0.3.0...0.3.1) (2025-01-12)
+
+
+### Bug Fixes
+
+* Req files malformed ([b61f2fa](https://github.com/Megabytemb/ha-adhoc-scheduler/commit/b61f2fa6b5b6e679c32a52821596332fb717bfee))
+
 ## [0.3.0](https://github.com/Megabytemb/ha-adhoc-scheduler/compare/0.2.0...0.3.0) (2024-01-21)
 
 
