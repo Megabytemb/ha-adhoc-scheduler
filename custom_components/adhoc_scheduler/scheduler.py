@@ -18,6 +18,7 @@ from homeassistant.util import dt as dt_util, ulid as ulid_util
 
 from .const import (
     CONF_ACTION,
+    CONF_ACTIONS,
     CONF_DELAY,
     CONF_DELAY_FROM,
     CONF_ID,
@@ -163,7 +164,7 @@ class Scheduler:
         """Add a schedule."""
         config = call.data
 
-        action_conf = config.get(CONF_ACTION)
+        action_conf = config.get(CONF_ACTION) or config.get(CONF_ACTIONS)
         name = config.get(CONF_NAME)
         if name is None:
             name = f"action_{len(self.scheduled_actions) + 1}"

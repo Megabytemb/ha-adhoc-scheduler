@@ -32,10 +32,10 @@ schedule:
       required: false
       selector:
         datetime:
-    action:
-      name: Action
-      description: Define the Action to trigger. Same syntax as Automation and Scripts
-      required: true
+    actions:
+      name: Actions
+      description: Define the Actions to trigger. Same syntax as Automation and Scripts
+      required: false
       selector:
         action:
 

@@ -17,6 +17,7 @@ NAME = "Adhoc Scheduler"
 DOMAIN = "adhoc_scheduler"
 
 CONF_ACTION = "action"
+CONF_ACTIONS = "actions"
 CONF_DELAY_FROM = "delay_from"
 
 SERVICE_SCHEDULE = "schedule"
@@ -32,13 +33,21 @@ SCHEDULE_SERVICE_SCHEMA = vol.All(
         {
             vol.Optional(CONF_NAME): str,
             vol.Optional(CONF_ID): str,
-            vol.Required(CONF_ACTION): cv.SCRIPT_SCHEMA,
+            vol.Optional(CONF_ACTION): cv.SCRIPT_SCHEMA,
+            vol.Optional(CONF_ACTIONS): cv.SCRIPT_SCHEMA,
             vol.Optional(CONF_DELAY): cv.positive_time_period_template,
             vol.Optional(CONF_TRIGGER_TIME): cv.datetime,
             vol.Optional(CONF_DELAY_FROM): cv.datetime,
         }
     ),
     cv.has_at_least_one_key(CONF_TRIGGER_TIME, CONF_DELAY),
+    cv.has_at_least_one_key(CONF_ACTION, CONF_ACTIONS),
+    # Verify that we don't have both
+    lambda value: value
+    if not (CONF_ACTION in value and CONF_ACTIONS in value)
+    else (_ for _ in ()).throw(
+        vol.Invalid(f"Cannot specify both '{CONF_ACTION}' and '{CONF_ACTIONS}'")
+    ),
 )
 
 DELETA_SCHEDULE_SERVICE_SCHEMA = vol.All(
