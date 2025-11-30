@@ -98,7 +98,7 @@ Every time this runs, it resets the timer to 5 minutes. If motion keeps happenin
 ```yaml
 action: adhoc_scheduler.schedule
 data:
-  id: "kitchen_light_timer" # Re-using this ID overwrites the previous schedule
+  id: "kitchen_light_timer" # Reusing this ID overwrites the previous schedule
   delay:
     minutes: 5
   actions:
