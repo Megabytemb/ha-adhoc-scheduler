@@ -67,7 +67,7 @@ Schedules an action to run later.
 
 | Field          | Type     | Required | Description                                                                                        |
 | :------------- | :------- | :------- | :------------------------------------------------------------------------------------------------- |
-| `action`       | action   | **Yes**  | The action(s) to execute. Uses standard HA automation syntax.                                      |
+| `actions`      | actions  | **Yes**  | The action(s) to execute. Uses standard HA automation syntax.                                      |
 | `delay`        | duration | No\*     | How long to wait before running.                                                                   |
 | `trigger_time` | datetime | No\*     | A specific date/time to run the action.                                                            |
 | `name`         | string   | No       | A friendly name for the Logbook entry.                                                             |
