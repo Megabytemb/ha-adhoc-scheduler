@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/Megabytemb/ha-adhoc-scheduler/compare/0.3.1...0.3.2) (2025-11-30)
+
+
+### Bug Fixes
+
+* support actions syntax ([77189e1](https://github.com/Megabytemb/ha-adhoc-scheduler/commit/77189e11c0159755beb0eca0d9e67930af2efcbc))
+
 ## [0.3.1](https://github.com/Megabytemb/ha-adhoc-scheduler/compare/0.3.0...0.3.1) (2025-01-12)
 
 
